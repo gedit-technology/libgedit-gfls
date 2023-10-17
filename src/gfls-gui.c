@@ -5,15 +5,44 @@
 #include <gtk/gtk.h>
 #include <locale.h>
 
+/* 100 MiB */
+#define FILE_SIZE_HARD_LIMIT (100 * 1024 * 1024)
+
+static GtkWidget *
+create_file_size_limit_spin_button (void)
+{
+	GtkGrid *hgrid;
+	GtkWidget *label;
+	GtkWidget *spin_button;
+
+	hgrid = GTK_GRID (gtk_grid_new ());
+	gtk_grid_set_column_spacing (hgrid, 6);
+
+	label = gtk_label_new ("File size limit:");
+	gtk_container_add (GTK_CONTAINER (hgrid), label);
+
+	spin_button = gtk_spin_button_new_with_range (0.0, FILE_SIZE_HARD_LIMIT, 1.0);
+	gtk_container_add (GTK_CONTAINER (hgrid), spin_button);
+
+	return GTK_WIDGET (hgrid);
+}
+
 static GtkWidget *
 create_side_panel (void)
 {
+	GtkGrid *vgrid;
 	GtkButton *open_file_button;
 
-	open_file_button = GTK_BUTTON (gtk_button_new_with_label ("Open File"));
-	gtk_widget_set_valign (GTK_WIDGET (open_file_button), GTK_ALIGN_START);
+	vgrid = GTK_GRID (gtk_grid_new ());
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (vgrid), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (vgrid, 6);
 
-	return GTK_WIDGET (open_file_button);
+	gtk_container_add (GTK_CONTAINER (vgrid), create_file_size_limit_spin_button ());
+
+	open_file_button = GTK_BUTTON (gtk_button_new_with_label ("Open File"));
+	gtk_container_add (GTK_CONTAINER (vgrid), GTK_WIDGET (open_file_button));
+
+	return GTK_WIDGET (vgrid);
 }
 
 static GtkWidget *
