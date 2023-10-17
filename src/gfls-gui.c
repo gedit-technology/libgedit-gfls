@@ -71,11 +71,31 @@ get_file_size_limit (ProgramData *program_data)
 }
 
 static void
+set_text_buffer_text (ProgramData *program_data,
+		      GBytes      *bytes)
+{
+	const gchar *text;
+	gsize n_bytes;
+	GtkTextBuffer *buffer;
+
+	text = g_bytes_get_data (bytes, &n_bytes);
+	if (!g_utf8_validate_len (text, n_bytes, NULL))
+	{
+		g_print ("Not valid UTF-8.\n");
+		return;
+	}
+
+	buffer = gtk_text_view_get_buffer (program_data->view);
+	gtk_text_buffer_set_text (buffer, text, n_bytes);
+}
+
+static void
 read_input_stream_cb (GObject      *source_object,
 		      GAsyncResult *result,
 		      gpointer      user_data)
 {
 	GInputStream *input_stream = G_INPUT_STREAM (source_object);
+	ProgramData *program_data = user_data;
 	GBytes *bytes;
 	gboolean is_truncated = FALSE;
 	GError *error = NULL;
@@ -95,6 +115,11 @@ read_input_stream_cb (GObject      *source_object,
 
 	g_print ("Input content is truncated: %s\n", is_truncated ? "yes" : "no");
 	g_print ("Number of bytes read: %" G_GSIZE_FORMAT "\n", g_bytes_get_size (bytes));
+
+	set_text_buffer_text (program_data, bytes);
+
+	g_print ("\n");
+
 	g_bytes_unref (bytes);
 }
 
@@ -107,7 +132,7 @@ read_input_stream (ProgramData *program_data)
 				      G_PRIORITY_DEFAULT,
 				      NULL,
 				      read_input_stream_cb,
-				      NULL);
+				      program_data);
 }
 
 static void
