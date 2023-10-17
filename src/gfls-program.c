@@ -47,10 +47,40 @@ query_info_cb (GObject      *source_object,
 	{
 		g_printerr ("Failed to query file informations: %s\n", error->message);
 		g_clear_error (&error);
+		goto out;
 	}
 
-	/* TODO: print infos */
+	if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_TYPE))
+	{
+		GFileType type;
 
+		type = g_file_info_get_file_type (info);
+
+		if (type == G_FILE_TYPE_REGULAR)
+		{
+			g_print ("Regular file.\n");
+		}
+		else
+		{
+			g_print ("The file is not a regular file.\n");
+		}
+	}
+	if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
+	{
+		const gchar *display_name;
+
+		display_name = g_file_info_get_display_name (info);
+		g_print ("Display name: %s\n", display_name);
+	}
+	if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
+	{
+		goffset n_bytes;
+
+		n_bytes = g_file_info_get_size (info);
+		g_print ("File size in bytes: %" G_GOFFSET_FORMAT "\n", n_bytes);
+	}
+
+out:
 	g_clear_object (&info);
 
 	quit_program ();
