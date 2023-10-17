@@ -15,6 +15,7 @@ typedef struct
 	GtkSpinButton *file_size_limit_spin_button;
 
 	GFile *file;
+	gsize expected_file_size;
 } ProgramData;
 
 static ProgramData *
@@ -56,11 +57,44 @@ create_file_size_limit_spin_button (ProgramData *program_data)
 }
 
 static void
+open_file_cb (GObject      *source_object,
+	      GAsyncResult *result,
+	      gpointer      user_data)
+{
+	GFile *file = G_FILE (source_object);
+	GFileInputStream *input_stream;
+	GError *error = NULL;
+
+	input_stream = g_file_read_finish (file, result, &error);
+
+	if (error != NULL)
+	{
+		g_printerr ("Failed to open file for reading: %s\n", error->message);
+		g_clear_error (&error);
+		g_clear_object (&input_stream);
+		return;
+	}
+
+	g_object_unref (input_stream);
+}
+
+static void
+open_file (ProgramData *program_data)
+{
+	g_file_read_async (program_data->file,
+			   G_PRIORITY_DEFAULT,
+			   NULL,
+			   open_file_cb,
+			   NULL);
+}
+
+static void
 query_file_info_cb (GObject      *source_object,
 		    GAsyncResult *result,
 		    gpointer      user_data)
 {
 	GFile *file = G_FILE (source_object);
+	ProgramData *program_data = user_data;
 	GFileInfo *info;
 	GError *error = NULL;
 
@@ -80,7 +114,16 @@ query_file_info_cb (GObject      *source_object,
 
 		n_bytes = g_file_info_get_size (info);
 		g_print ("File size in bytes: %" G_GOFFSET_FORMAT "\n", n_bytes);
+
+		program_data->expected_file_size = n_bytes;
 	}
+	else
+	{
+		/* Unknown size, let's start with 8 KiB. */
+		program_data->expected_file_size = 8192;
+	}
+
+	open_file (program_data);
 
 	g_clear_object (&info);
 }
@@ -94,7 +137,7 @@ query_file_info (ProgramData *program_data)
 				 G_PRIORITY_DEFAULT,
 				 NULL,
 				 query_file_info_cb,
-				 NULL);
+				 program_data);
 }
 
 static void
