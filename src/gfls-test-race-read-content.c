@@ -26,7 +26,11 @@
  * --------
  *
  * Rely on the etag values provided by GIO to know if the file has been
- * externally modified.
+ * externally modified. Worst case this is detected upon saving the file (show
+ * an infobar at that moment).
+ *
+ * It can be desired to be able to open a file that is continuously modified by
+ * another program, e.g. a log file.
  */
 
 /* Read a string of 80 chars and nul-terminate it.
