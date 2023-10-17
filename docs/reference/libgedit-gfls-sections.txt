@@ -1,0 +1,9 @@
+<INCLUDE>gfls/gfls.h</INCLUDE>
+
+<SECTION>
+<FILE>gfls-input-stream</FILE>
+gfls_input_stream_read_async
+gfls_input_stream_read_finish
+<SUBSECTION Standard>
+GFLS_H_INSIDE
+</SECTION>

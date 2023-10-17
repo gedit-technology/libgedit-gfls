@@ -113,5 +113,11 @@ add_project_arguments(supported_warning_cflags, language: 'c')
 subdir('gfls')
 subdir('src')
 
+if get_option('gtk_doc')
+  subdir('docs/reference')
+endif
+
 summary('API version', GFLS_API_VERSION)
 summary('Prefix', get_option('prefix'))
+summary('GObject Introspection', get_option('gobject_introspection'))
+summary('API documentation', get_option('gtk_doc'))
