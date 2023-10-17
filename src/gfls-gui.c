@@ -13,6 +13,8 @@ typedef struct
 	GtkApplicationWindow *window;
 	GtkTextView *view;
 	GtkSpinButton *file_size_limit_spin_button;
+
+	GFile *file;
 } ProgramData;
 
 static ProgramData *
@@ -24,7 +26,11 @@ program_data_new (void)
 static void
 program_data_free (ProgramData *program_data)
 {
-	g_free (program_data);
+	if (program_data != NULL)
+	{
+		g_clear_object (&program_data->file);
+		g_free (program_data);
+	}
 }
 
 static GtkWidget *
@@ -50,22 +56,64 @@ create_file_size_limit_spin_button (ProgramData *program_data)
 }
 
 static void
+query_file_info_cb (GObject      *source_object,
+		    GAsyncResult *result,
+		    gpointer      user_data)
+{
+	GFile *file = G_FILE (source_object);
+	GFileInfo *info;
+	GError *error = NULL;
+
+	info = g_file_query_info_finish (file, result, &error);
+
+	if (error != NULL)
+	{
+		g_printerr ("Failed to query file informations: %s\n", error->message);
+		g_clear_error (&error);
+		g_clear_object (&info);
+		return;
+	}
+
+	if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
+	{
+		goffset n_bytes;
+
+		n_bytes = g_file_info_get_size (info);
+		g_print ("File size in bytes: %" G_GOFFSET_FORMAT "\n", n_bytes);
+	}
+
+	g_clear_object (&info);
+}
+
+static void
+query_file_info (ProgramData *program_data)
+{
+	g_file_query_info_async (program_data->file,
+				 G_FILE_ATTRIBUTE_STANDARD_SIZE,
+				 G_FILE_QUERY_INFO_NONE,
+				 G_PRIORITY_DEFAULT,
+				 NULL,
+				 query_file_info_cb,
+				 NULL);
+}
+
+static void
 open_file_chooser_response_cb (GtkFileChooserNative *open_file_chooser,
 			       gint                  response_id,
 			       ProgramData          *program_data)
 {
 	if (response_id == GTK_RESPONSE_ACCEPT)
 	{
-		GFile *file;
 		gchar *parse_name;
 
-		file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (open_file_chooser));
+		g_clear_object (&program_data->file);
+		program_data->file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (open_file_chooser));
 
-		parse_name = g_file_get_parse_name (file);
+		parse_name = g_file_get_parse_name (program_data->file);
 		g_print ("Open file: %s\n", parse_name);
 		g_free (parse_name);
 
-		g_object_unref (file);
+		query_file_info (program_data);
 	}
 
 	g_object_unref (open_file_chooser);
