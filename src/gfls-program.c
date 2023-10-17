@@ -3,6 +3,7 @@
  */
 
 #include <gio/gio.h>
+#include <locale.h>
 
 typedef struct
 {
@@ -108,6 +109,8 @@ main (int    argc,
 	GApplication *app;
 	ProgramData *program_data;
 	int exit_status;
+
+	setlocale (LC_ALL, "");
 
 	app = g_application_new (NULL, G_APPLICATION_HANDLES_COMMAND_LINE);
 	program_data = program_data_new ();
