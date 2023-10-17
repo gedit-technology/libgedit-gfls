@@ -50,6 +50,19 @@ create_file_size_limit_spin_button (ProgramData *program_data)
 }
 
 static void
+open_file_chooser_response_cb (GtkFileChooserNative *open_file_chooser,
+			       gint                  response_id,
+			       ProgramData          *program_data)
+{
+	if (response_id == GTK_RESPONSE_ACCEPT)
+	{
+		g_print ("Open file.\n");
+	}
+
+	g_object_unref (open_file_chooser);
+}
+
+static void
 open_file_button_clicked_cb (GtkButton   *open_file_button,
 			     ProgramData *program_data)
 {
@@ -59,6 +72,11 @@ open_file_button_clicked_cb (GtkButton   *open_file_button,
 						    GTK_WINDOW (program_data->window),
 						    GTK_FILE_CHOOSER_ACTION_OPEN,
 						    NULL, NULL);
+
+	g_signal_connect (file_chooser,
+			  "response",
+			  G_CALLBACK (open_file_chooser_response_cb),
+			  program_data);
 
 	gtk_native_dialog_set_modal (GTK_NATIVE_DIALOG (file_chooser), TRUE);
 	gtk_native_dialog_show (GTK_NATIVE_DIALOG (file_chooser));
