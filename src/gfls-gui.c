@@ -53,7 +53,15 @@ static void
 open_file_button_clicked_cb (GtkButton   *open_file_button,
 			     ProgramData *program_data)
 {
-	g_print ("Open file.\n");
+	GtkFileChooserNative *file_chooser;
+
+	file_chooser = gtk_file_chooser_native_new ("Open File",
+						    GTK_WINDOW (program_data->window),
+						    GTK_FILE_CHOOSER_ACTION_OPEN,
+						    NULL, NULL);
+
+	gtk_native_dialog_set_modal (GTK_NATIVE_DIALOG (file_chooser), TRUE);
+	gtk_native_dialog_show (GTK_NATIVE_DIALOG (file_chooser));
 }
 
 static GtkWidget *
