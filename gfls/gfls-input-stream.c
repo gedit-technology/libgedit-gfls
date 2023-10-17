@@ -4,6 +4,14 @@
 
 #include "gfls-input-stream.h"
 
+/**
+ * SECTION:gfls-input-stream
+ * @Title: GflsInputStream
+ * @Short_description: Additional functions for #GInputStream
+ *
+ * Additional functions for #GInputStream.
+ */
+
 /* Problem with g_file_load_partial_contents_async/finish():
  *
  * From an API point of view, the maximum number of bytes to read is not
@@ -12,7 +20,7 @@
  * that I'll be able to restrict it to 20MB (the API doesn't guarantee it).
  *
  * gfls_input_stream_read_async/finish() solves this (and works on any
- * GInputStream).
+ * GInputStream, which we need for stdin support).
  */
 
 typedef struct
@@ -255,10 +263,16 @@ read_next_chunk (GTask *task)
  * @input_stream: a #GInputStream.
  * @expected_size: the expected number of bytes contained in @input_stream.
  * @max_size: the maximum number of bytes to read.
- * @io_priority:
- * @cancellable:
- * @callback:
- * @user_data:
+ * @io_priority: the I/O priority of the request. E.g. %G_PRIORITY_LOW,
+ *   %G_PRIORITY_DEFAULT or %G_PRIORITY_HIGH.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): a #GAsyncReadyCallback to call when the operation
+ *   is finished.
+ * @user_data: user data to pass to @callback.
+ *
+ * See the #GAsyncResult documentation to know how to use this function.
+ *
+ * Since: 0.1
  */
 void
 gfls_input_stream_read_async (GInputStream        *input_stream,
@@ -286,17 +300,18 @@ gfls_input_stream_read_async (GInputStream        *input_stream,
 
 /**
  * gfls_input_stream_read_finish:
- * @input_stream:
- * @result:
+ * @input_stream: a #GInputStream.
+ * @result: a #GAsyncResult.
  * @is_truncated: will be set to %TRUE if the @input_stream contains more data
  *   to be read, but the maximum number of bytes to read has been reached.
- * @error:
+ * @error: a #GError, or %NULL.
  *
  * The data contained in the resulting #GBytes is always zero-terminated, but
  * this is not included in the #GBytes length. The resulting #GBytes should be
  * freed with g_bytes_unref() when no longer in use.
  *
  * Returns: a #GBytes, or %NULL on error.
+ * Since: 0.1
  */
 GBytes *
 gfls_input_stream_read_finish (GInputStream  *input_stream,
