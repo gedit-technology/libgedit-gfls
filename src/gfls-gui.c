@@ -10,6 +10,7 @@
 
 typedef struct
 {
+	GtkApplicationWindow *window;
 	GtkTextView *view;
 	GtkSpinButton *file_size_limit_spin_button;
 } ProgramData;
@@ -108,20 +109,21 @@ static void
 activate_cb (GApplication *g_app,
 	     ProgramData  *program_data)
 {
-	GtkWidget *window;
 	GtkGrid *hgrid;
 
-	window = gtk_application_window_new (GTK_APPLICATION (g_app));
-	gtk_window_set_default_size (GTK_WINDOW (window), 800, 600);
+	g_assert (program_data->window == NULL);
+
+	program_data->window = GTK_APPLICATION_WINDOW (gtk_application_window_new (GTK_APPLICATION (g_app)));
+	gtk_window_set_default_size (GTK_WINDOW (program_data->window), 800, 600);
 
 	hgrid = GTK_GRID (gtk_grid_new ());
 
 	gtk_container_add (GTK_CONTAINER (hgrid), create_side_panel (program_data));
 	gtk_container_add (GTK_CONTAINER (hgrid), create_view (program_data));
 
-	gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (hgrid));
+	gtk_container_add (GTK_CONTAINER (program_data->window), GTK_WIDGET (hgrid));
 
-	gtk_widget_show_all (window);
+	gtk_widget_show_all (GTK_WIDGET (program_data->window));
 }
 
 int
