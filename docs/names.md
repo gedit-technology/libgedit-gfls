@@ -9,3 +9,6 @@ Class names:
   With GflsInfos, a GFile object would remain to be called a "file", simply. And
   GflsInfos reflect the fact that it gathers GFileInfos (basically) for later
   use.
+
+- GflsLoader?
+- GflsFile to extend GFile with more functions.
