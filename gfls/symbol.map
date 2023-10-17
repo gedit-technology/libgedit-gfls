@@ -1,0 +1,6 @@
+{
+global:
+  gfls_*;
+local:
+  *;
+};

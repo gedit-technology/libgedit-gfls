@@ -110,6 +110,7 @@ supported_warning_cflags = c_compiler.get_supported_arguments(warning_cflags)
 add_project_arguments(supported_warning_cflags, language: 'c')
 ##### end CFLAGS
 
+subdir('gfls')
 subdir('src')
 
 summary('API version', GFLS_API_VERSION)
