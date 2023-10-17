@@ -270,6 +270,16 @@ read_next_chunk (GTask *task)
  *   is finished.
  * @user_data: user data to pass to @callback.
  *
+ * This function starts a read operation on @input_stream. It is meant to be
+ * used as the only read operation on @input_stream, to get a #GBytes as a
+ * result, with @max_size as the provided maximum number of bytes to read.
+ *
+ * @expected_size is typically a #GFile size as returned by
+ * g_file_info_get_size(). But note that in that case, the returned #GBytes may
+ * contain a different number of bytes than what was expected (the
+ * TOC/TOU problem: time of check to time of use). @expected_size is used as an
+ * indication to how much memory to allocate initially.
+ *
  * See the #GAsyncResult documentation to know how to use this function.
  *
  * Since: 0.1
@@ -305,6 +315,8 @@ gfls_input_stream_read_async (GInputStream        *input_stream,
  * @is_truncated: will be set to %TRUE if the @input_stream contains more data
  *   to be read, but the maximum number of bytes to read has been reached.
  * @error: a #GError, or %NULL.
+ *
+ * Finishes an operation started with gfls_input_stream_read_async().
  *
  * The data contained in the resulting #GBytes is always zero-terminated, but
  * this is not included in the #GBytes length. The resulting #GBytes should be
