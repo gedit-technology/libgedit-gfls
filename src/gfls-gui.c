@@ -4,6 +4,7 @@
 
 #include <gtk/gtk.h>
 #include <locale.h>
+#include "gfls-input-stream.h"
 
 /* 100 MiB */
 #define FILE_SIZE_HARD_LIMIT (100 * 1024 * 1024)
@@ -16,6 +17,7 @@ typedef struct
 
 	GFile *file;
 	gsize expected_file_size;
+	GFileInputStream *input_stream;
 } ProgramData;
 
 static ProgramData *
@@ -30,6 +32,7 @@ program_data_free (ProgramData *program_data)
 	if (program_data != NULL)
 	{
 		g_clear_object (&program_data->file);
+		g_clear_object (&program_data->input_stream);
 		g_free (program_data);
 	}
 }
@@ -57,25 +60,65 @@ create_file_size_limit_spin_button (ProgramData *program_data)
 }
 
 static void
+read_input_stream_cb (GObject      *source_object,
+		      GAsyncResult *result,
+		      gpointer      user_data)
+{
+	GInputStream *input_stream = G_INPUT_STREAM (source_object);
+	GBytes *bytes;
+	gboolean is_truncated = FALSE;
+	GError *error = NULL;
+
+	bytes = gfls_input_stream_read_finish (input_stream,
+					       result,
+					       &is_truncated,
+					       &error);
+
+	if (error != NULL)
+	{
+		g_printerr ("Failed to read input stream: %s\n", error->message);
+		g_clear_error (&error);
+		g_bytes_unref (bytes);
+		return;
+	}
+
+	g_print ("Input content is truncated: %s\n", is_truncated ? "yes" : "no");
+	g_print ("Number of bytes read: %" G_GSIZE_FORMAT "\n", g_bytes_get_size (bytes));
+	g_bytes_unref (bytes);
+}
+
+static void
+read_input_stream (ProgramData *program_data)
+{
+	gfls_input_stream_read_async (G_INPUT_STREAM (program_data->input_stream),
+				      program_data->expected_file_size,
+				      50,
+				      G_PRIORITY_DEFAULT,
+				      NULL,
+				      read_input_stream_cb,
+				      NULL);
+}
+
+static void
 open_file_cb (GObject      *source_object,
 	      GAsyncResult *result,
 	      gpointer      user_data)
 {
 	GFile *file = G_FILE (source_object);
-	GFileInputStream *input_stream;
+	ProgramData *program_data = user_data;
 	GError *error = NULL;
 
-	input_stream = g_file_read_finish (file, result, &error);
+	g_clear_object (&program_data->input_stream);
+	program_data->input_stream = g_file_read_finish (file, result, &error);
 
 	if (error != NULL)
 	{
 		g_printerr ("Failed to open file for reading: %s\n", error->message);
 		g_clear_error (&error);
-		g_clear_object (&input_stream);
 		return;
 	}
 
-	g_object_unref (input_stream);
+	read_input_stream (program_data);
 }
 
 static void
@@ -85,7 +128,7 @@ open_file (ProgramData *program_data)
 			   G_PRIORITY_DEFAULT,
 			   NULL,
 			   open_file_cb,
-			   NULL);
+			   program_data);
 }
 
 static void

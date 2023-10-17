@@ -15,6 +15,9 @@ executable(
 
 executable(
   'gfls-gui',
-  'gfls-gui.c',
+  [
+    'gfls-gui.c',
+    'gfls-input-stream.c',
+  ],
   dependencies: GFLS_DEPS,
 )
