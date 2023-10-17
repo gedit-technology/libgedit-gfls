@@ -32,13 +32,43 @@ quit_program (void)
 }
 
 static void
+query_info_cb (GObject      *source_object,
+	       GAsyncResult *result,
+	       gpointer      user_data)
+{
+	GFile *file = G_FILE (source_object);
+	GFileInfo *info;
+	GError *error = NULL;
+
+	info = g_file_query_info_finish (file, result, &error);
+
+	if (error != NULL)
+	{
+		g_printerr ("Failed to query file informations: %s\n", error->message);
+		g_clear_error (&error);
+	}
+
+	/* TODO: print infos */
+
+	g_clear_object (&info);
+
+	quit_program ();
+}
+
+static void
 launch_program (ProgramData *program_data)
 {
 	g_application_hold (g_application_get_default ());
 
-	/* TODO: read GFileInfos */
-
-	quit_program ();
+	g_file_query_info_async (program_data->file,
+				 G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+				 G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME ","
+				 G_FILE_ATTRIBUTE_STANDARD_SIZE,
+				 G_FILE_QUERY_INFO_NONE,
+				 G_PRIORITY_DEFAULT,
+				 NULL,
+				 query_info_cb,
+				 NULL);
 }
 
 static gint
