@@ -56,7 +56,16 @@ open_file_chooser_response_cb (GtkFileChooserNative *open_file_chooser,
 {
 	if (response_id == GTK_RESPONSE_ACCEPT)
 	{
-		g_print ("Open file.\n");
+		GFile *file;
+		gchar *parse_name;
+
+		file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (open_file_chooser));
+
+		parse_name = g_file_get_parse_name (file);
+		g_print ("Open file: %s\n", parse_name);
+		g_free (parse_name);
+
+		g_object_unref (file);
 	}
 
 	g_object_unref (open_file_chooser);
