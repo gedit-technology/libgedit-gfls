@@ -8,12 +8,31 @@
 /* 100 MiB */
 #define FILE_SIZE_HARD_LIMIT (100 * 1024 * 1024)
 
+typedef struct
+{
+	GtkTextView *view;
+	GtkSpinButton *file_size_limit_spin_button;
+} ProgramData;
+
+static ProgramData *
+program_data_new (void)
+{
+	return g_new0 (ProgramData, 1);
+}
+
+static void
+program_data_free (ProgramData *program_data)
+{
+	g_free (program_data);
+}
+
 static GtkWidget *
-create_file_size_limit_spin_button (void)
+create_file_size_limit_spin_button (ProgramData *program_data)
 {
 	GtkGrid *hgrid;
 	GtkWidget *label;
-	GtkWidget *spin_button;
+
+	g_assert (program_data->file_size_limit_spin_button == NULL);
 
 	hgrid = GTK_GRID (gtk_grid_new ());
 	gtk_grid_set_column_spacing (hgrid, 6);
@@ -21,14 +40,16 @@ create_file_size_limit_spin_button (void)
 	label = gtk_label_new ("File size limit:");
 	gtk_container_add (GTK_CONTAINER (hgrid), label);
 
-	spin_button = gtk_spin_button_new_with_range (0.0, FILE_SIZE_HARD_LIMIT, 1.0);
-	gtk_container_add (GTK_CONTAINER (hgrid), spin_button);
+	program_data->file_size_limit_spin_button =
+		GTK_SPIN_BUTTON (gtk_spin_button_new_with_range (0.0, FILE_SIZE_HARD_LIMIT, 1.0));
+
+	gtk_container_add (GTK_CONTAINER (hgrid), GTK_WIDGET (program_data->file_size_limit_spin_button));
 
 	return GTK_WIDGET (hgrid);
 }
 
 static GtkWidget *
-create_side_panel (void)
+create_side_panel (ProgramData *program_data)
 {
 	GtkGrid *vgrid;
 	GtkButton *open_file_button;
@@ -37,7 +58,7 @@ create_side_panel (void)
 	gtk_orientable_set_orientation (GTK_ORIENTABLE (vgrid), GTK_ORIENTATION_VERTICAL);
 	gtk_grid_set_row_spacing (vgrid, 6);
 
-	gtk_container_add (GTK_CONTAINER (vgrid), create_file_size_limit_spin_button ());
+	gtk_container_add (GTK_CONTAINER (vgrid), create_file_size_limit_spin_button (program_data));
 
 	open_file_button = GTK_BUTTON (gtk_button_new_with_label ("Open File"));
 	gtk_container_add (GTK_CONTAINER (vgrid), GTK_WIDGET (open_file_button));
@@ -46,26 +67,27 @@ create_side_panel (void)
 }
 
 static GtkWidget *
-create_view (void)
+create_view (ProgramData *program_data)
 {
-	GtkTextView *view;
 	GtkWidget *scrolled_window;
 
-	view = GTK_TEXT_VIEW (gtk_text_view_new ());
-	gtk_text_view_set_monospace (view, TRUE);
-	g_object_set (view,
+	g_assert (program_data->view == NULL);
+
+	program_data->view = GTK_TEXT_VIEW (gtk_text_view_new ());
+	gtk_text_view_set_monospace (program_data->view, TRUE);
+	g_object_set (program_data->view,
 		      "expand", TRUE,
 		      NULL);
 
 	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-	gtk_container_add (GTK_CONTAINER (scrolled_window), GTK_WIDGET (view));
+	gtk_container_add (GTK_CONTAINER (scrolled_window), GTK_WIDGET (program_data->view));
 
 	return scrolled_window;
 }
 
 static void
 activate_cb (GApplication *g_app,
-	     gpointer      user_data)
+	     ProgramData  *program_data)
 {
 	GtkWidget *window;
 	GtkGrid *hgrid;
@@ -75,8 +97,8 @@ activate_cb (GApplication *g_app,
 
 	hgrid = GTK_GRID (gtk_grid_new ());
 
-	gtk_container_add (GTK_CONTAINER (hgrid), create_side_panel ());
-	gtk_container_add (GTK_CONTAINER (hgrid), create_view ());
+	gtk_container_add (GTK_CONTAINER (hgrid), create_side_panel (program_data));
+	gtk_container_add (GTK_CONTAINER (hgrid), create_view (program_data));
 
 	gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (hgrid));
 
@@ -88,19 +110,22 @@ main (int    argc,
       char **argv)
 {
 	GtkApplication *app;
+	ProgramData *program_data;
 	int exit_status;
 
 	setlocale (LC_ALL, "");
 
 	app = gtk_application_new (NULL, G_APPLICATION_DEFAULT_FLAGS);
+	program_data = program_data_new ();
 
 	g_signal_connect (app,
 			  "activate",
 			  G_CALLBACK (activate_cb),
-			  NULL);
+			  program_data);
 
 	exit_status = g_application_run (G_APPLICATION (app), argc, argv);
 
 	g_object_unref (app);
+	program_data_free (program_data);
 	return exit_status;
 }
