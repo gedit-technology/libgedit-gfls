@@ -1,9 +1,6 @@
 executable(
   'gfls-program',
-  [
-    'gfls-program.c',
-    'gfls-input-stream.c',
-  ],
+  'gfls-program.c',
   dependencies: GFLS_DEPS,
 )
 
