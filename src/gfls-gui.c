@@ -59,6 +59,17 @@ create_file_size_limit_spin_button (ProgramData *program_data)
 	return GTK_WIDGET (hgrid);
 }
 
+static gsize
+get_file_size_limit (ProgramData *program_data)
+{
+	gint value;
+
+	value = gtk_spin_button_get_value_as_int (program_data->file_size_limit_spin_button);
+	g_return_val_if_fail (value >= 0, 0);
+
+	return value;
+}
+
 static void
 read_input_stream_cb (GObject      *source_object,
 		      GAsyncResult *result,
@@ -92,7 +103,7 @@ read_input_stream (ProgramData *program_data)
 {
 	gfls_input_stream_read_async (G_INPUT_STREAM (program_data->input_stream),
 				      program_data->expected_file_size,
-				      50,
+				      get_file_size_limit (program_data),
 				      G_PRIORITY_DEFAULT,
 				      NULL,
 				      read_input_stream_cb,
