@@ -10,11 +10,8 @@ executable(
   dependencies: GFLS_DEPS,
 )
 
-#executable(
-#  'gfls-gui',
-#  [
-#    'gfls-gui.c',
-#    'gfls-input-stream.c',
-#  ],
-#  dependencies: GFLS_DEPS,
-#)
+executable(
+  'gfls-gui',
+  'gfls-gui.c',
+  dependencies: GFLS_LIB_DEP,
+)

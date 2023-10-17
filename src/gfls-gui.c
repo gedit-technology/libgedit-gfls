@@ -4,7 +4,7 @@
 
 #include <gtk/gtk.h>
 #include <locale.h>
-#include "gfls-input-stream.h"
+#include <gfls/gfls.h>
 
 /* 100 MiB */
 #define FILE_SIZE_HARD_LIMIT (100 * 1024 * 1024)
