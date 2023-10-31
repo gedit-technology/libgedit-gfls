@@ -37,6 +37,19 @@ typedef struct
 	GBytes *bytes;
 } TaskData;
 
+GQuark
+gfls_loader_error_quark (void)
+{
+	static GQuark quark = 0;
+
+	if (G_UNLIKELY (quark == 0))
+	{
+		quark = g_quark_from_static_string ("gfls-loader-error");
+	}
+
+	return quark;
+}
+
 static TaskData *
 task_data_new (gsize max_size,
 	       guint max_n_bytes_per_line)

@@ -10,8 +10,12 @@ GFLS_H_INSIDE
 
 <SECTION>
 <FILE>gfls-loader-basic</FILE>
+GFLS_LOADER_ERROR
+GflsLoaderError
 gfls_loader_basic_load_async
 gfls_loader_basic_load_finish
+<SUBSECTION Standard>
+gfls_loader_error_quark
 </SECTION>
 
 <SECTION>

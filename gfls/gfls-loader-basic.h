@@ -13,6 +13,24 @@
 
 G_BEGIN_DECLS
 
+#define GFLS_LOADER_ERROR gfls_loader_error_quark ()
+
+/**
+ * GflsLoaderError:
+ * @GFLS_LOADER_ERROR_TOO_BIG: The file is too big.
+ *
+ * An error code used with the %GFLS_LOADER_ERROR domain.
+ *
+ * Since: 0.1
+ */
+typedef enum _GflsLoaderError
+{
+	GFLS_LOADER_ERROR_TOO_BIG,
+} GflsLoaderError;
+
+G_MODULE_EXPORT
+GQuark		gfls_loader_error_quark		(void);
+
 G_MODULE_EXPORT
 void		gfls_loader_basic_load_async	(GFile               *file,
 						 gsize                max_size,
