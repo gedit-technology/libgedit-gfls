@@ -7,6 +7,8 @@
 
 #define GFLS_H_INSIDE
 
+#include <gfls/gfls-enum-types.h>
+
 #include <gfls/gfls-input-stream.h>
 #include <gfls/gfls-loader-basic.h>
 #include <gfls/gfls-utf8.h>

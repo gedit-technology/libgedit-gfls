@@ -17,9 +17,19 @@ install_headers(
   install_dir: headers_install_dir
 )
 
+gfls_enum_types = GNOME.mkenums_simple(
+  'gfls-enum-types',
+  decorator: 'G_MODULE_EXPORT',
+  header_prefix: '#include <gmodule.h>',
+  sources: gfls_public_headers,
+  install_header: true,
+  install_dir: headers_install_dir
+)
+
 gfls_static_lib = static_library(
   'libgedit-gfls-static',
-  gfls_public_c_files,
+  [gfls_public_c_files,
+   gfls_enum_types],
   pic: true, # gfls_static_lib is potentially linked in a shared library.
   include_directories: ROOT_INCLUDE_DIR,
   dependencies: GFLS_DEPS,
@@ -30,6 +40,7 @@ gfls_static_lib = static_library(
 GFLS_STATIC_DEP = declare_dependency(
   include_directories: ROOT_INCLUDE_DIR,
   link_with: gfls_static_lib,
+  sources: gfls_enum_types[1],
   dependencies: GFLS_DEPS
 )
 
@@ -52,6 +63,7 @@ gfls_lib = library(
 GFLS_LIB_DEP = declare_dependency(
   include_directories: ROOT_INCLUDE_DIR,
   link_with: gfls_lib,
+  sources: gfls_enum_types[1],
   dependencies: GFLS_DEPS
 )
 
@@ -77,6 +89,7 @@ if get_option('gobject_introspection')
     sources: [
       gfls_public_headers,
       gfls_public_c_files,
+      gfls_enum_types,
     ],
     # Support for deps being built as subprojects:
     dependencies: GFLS_DEPS,
