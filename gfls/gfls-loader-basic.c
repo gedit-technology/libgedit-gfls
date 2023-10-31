@@ -13,7 +13,21 @@
  * @Title: GflsLoaderBasic
  * @Short_description: Basic file loader
  *
- * Basic file loader.
+ * Basic file loader that validates input for GtkTextView purposes:
+ * - Must not exceed a certain size (because all the content of a GtkTextBuffer
+ *   is stored in memory).
+ * - Must be valid UTF-8 already (GTK in general accepts only UTF-8 only
+ *   strings).
+ * - Must not contain very long lines (not well supported by the GtkTextView
+ *   widget, there can be performance problems and freezes).
+ *
+ * So:
+ * - No character encoding auto-detection and/or conversion.
+ * - No workarounds for problems found, just return an error without the
+ *   possibility to re-configure the loading.
+ *
+ * But this basic file loader offers a convenient API for the above: #GFile
+ * loading with the intention to put its content into a GtkTextBuffer.
  */
 
 /* When the file size is unknown, start with 8 KiB. */
