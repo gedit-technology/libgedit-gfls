@@ -318,6 +318,11 @@ gfls_input_stream_read_async (GInputStream        *input_stream,
  *
  * Finishes an operation started with gfls_input_stream_read_async().
  *
+ * If @is_truncated is set to %TRUE, it is not an error (@error is not set), and
+ * a #GBytes is returned. However, since gfls_input_stream_read_async() is meant
+ * to be used as the only read operation on @input_stream, it is an undefined
+ * behavior if you try to read more content from @input_stream.
+ *
  * The data contained in the resulting #GBytes is always zero-terminated, but
  * this is not included in the #GBytes length. The resulting #GBytes should be
  * freed with g_bytes_unref() when no longer in use.
