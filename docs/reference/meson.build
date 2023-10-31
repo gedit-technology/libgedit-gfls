@@ -18,8 +18,8 @@ GNOME.gtkdoc(
   main_xml: 'libgedit-gfls-docs.xml',
   src_dir: include_directories('../../gfls/'),
   dependencies: GFLS_LIB_DEP,
-  #scan_args: ['--rebuild-types'],
-  #gobject_typesfile: 'libgedit-gfls-@0@.types'.format(GFLS_API_VERSION),
+  scan_args: ['--rebuild-types'],
+  gobject_typesfile: 'libgedit-gfls-@0@.types'.format(GFLS_API_VERSION),
   fixxref_args: [
     '--html-dir=@0@'.format(html_dir),
     '--extra-dir=@0@'.format(glib_docpath),
