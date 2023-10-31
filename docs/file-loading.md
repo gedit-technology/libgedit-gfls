@@ -16,3 +16,12 @@ In all cases (except if forcing to load the whole file), stop reading after max
 bytes. To avoid a
 [TOC/TOU](https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use)
 problem.
+
+Simple implementation first
+---------------------------
+
+Show simply an error infobar in the following cases:
+- File size > max
+- When loading the content, > max bytes reached.
+- Invalid UTF-8.
+- Contains a very long line.
