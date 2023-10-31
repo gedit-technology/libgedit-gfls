@@ -1,2 +1,2 @@
 subdir('interactive-tests')
-#subdir('unit-tests')
+subdir('unit-tests')
