@@ -16,7 +16,8 @@
 /**
  * gfls_utf8_has_very_long_line:
  * @str: a UTF-8 nul-terminated string.
- * @max_n_bytes_per_line: the maximum number of bytes per line.
+ * @max_n_bytes_per_line: the maximum number of bytes per line, without counting
+ *   the newline character(s).
  *
  * Returns %TRUE if a line in @str exceeds @max_n_bytes_per_line.
  *
