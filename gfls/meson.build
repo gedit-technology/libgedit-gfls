@@ -1,11 +1,13 @@
 gfls_public_headers = [
   'gfls.h',
   'gfls-input-stream.h',
+  'gfls-loader-basic.h',
   'gfls-utf8.h',
 ]
 
 gfls_public_c_files = [
   'gfls-input-stream.c',
+  'gfls-loader-basic.c',
   'gfls-utf8.c',
 ]
 

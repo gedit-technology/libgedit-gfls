@@ -9,6 +9,12 @@ GFLS_H_INSIDE
 </SECTION>
 
 <SECTION>
+<FILE>gfls-loader-basic</FILE>
+gfls_loader_basic_load_async
+gfls_loader_basic_load_finish
+</SECTION>
+
+<SECTION>
 <FILE>gfls-utf8</FILE>
 gfls_utf8_has_very_long_line
 </SECTION>
