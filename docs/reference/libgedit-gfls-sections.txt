@@ -15,6 +15,8 @@ GflsLoaderError
 gfls_loader_basic_load_async
 gfls_loader_basic_load_finish
 <SUBSECTION Standard>
+GFLS_TYPE_LOADER_ERROR
+gfls_loader_error_get_type
 gfls_loader_error_quark
 </SECTION>
 
