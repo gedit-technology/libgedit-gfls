@@ -11,6 +11,8 @@ Validate input for GtkTextView purposes:
 
 So:
 - No charset auto-detection and conversion.
+- No workarounds for problems found, just return an error without the
+  possibility to re-configure the loading.
 
 But:
-- Have a convenient API for the above.
+- Have a convenient API for the above (GFile loading into a GtkTextBuffer).
