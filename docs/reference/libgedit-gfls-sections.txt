@@ -7,3 +7,8 @@ gfls_input_stream_read_finish
 <SUBSECTION Standard>
 GFLS_H_INSIDE
 </SECTION>
+
+<SECTION>
+<FILE>gfls-utf8</FILE>
+gfls_utf8_has_very_long_line
+</SECTION>

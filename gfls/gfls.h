@@ -8,6 +8,7 @@
 #define GFLS_H_INSIDE
 
 #include <gfls/gfls-input-stream.h>
+#include <gfls/gfls-utf8.h>
 
 #undef GFLS_H_INSIDE
 

@@ -1,10 +1,12 @@
 gfls_public_headers = [
   'gfls.h',
   'gfls-input-stream.h',
+  'gfls-utf8.h',
 ]
 
 gfls_public_c_files = [
   'gfls-input-stream.c',
+  'gfls-utf8.c',
 ]
 
 headers_install_dir = get_option('includedir') / '@0@-@1@/gfls/'.format(meson.project_name(), GFLS_API_VERSION)
