@@ -30,6 +30,29 @@ gboolean
 gfls_utf8_has_very_long_line (const gchar *str,
 			      guint        max_n_bytes_per_line)
 {
-	/* TODO: implementation */
+	guint cur_pos;
+	guint line_length = 0;
+
+	g_return_val_if_fail (str != NULL, FALSE);
+
+	for (cur_pos = 0; str[cur_pos] != '\0'; cur_pos++)
+	{
+		gchar ch = str[cur_pos];
+
+		if (ch == '\n' || ch == '\r')
+		{
+			line_length = 0;
+		}
+		else
+		{
+			line_length++;
+
+			if (line_length > max_n_bytes_per_line)
+			{
+				return TRUE;
+			}
+		}
+	}
+
 	return FALSE;
 }
