@@ -17,7 +17,10 @@ G_BEGIN_DECLS
 
 /**
  * GflsLoaderError:
- * @GFLS_LOADER_ERROR_TOO_BIG: The file is too big.
+ * @GFLS_LOADER_ERROR_TOO_BIG: The content is too big.
+ * @GFLS_LOADER_ERROR_NOT_UTF8: The content is not a valid UTF-8 string. Used by
+ *   basic loaders that don't support charset conversion.
+ * @GFLS_LOADER_ERROR_HAS_VERY_LONG_LINE: The content contains a very long line.
  *
  * An error code used with the %GFLS_LOADER_ERROR domain.
  *
@@ -26,6 +29,8 @@ G_BEGIN_DECLS
 typedef enum _GflsLoaderError
 {
 	GFLS_LOADER_ERROR_TOO_BIG,
+	GFLS_LOADER_ERROR_NOT_UTF8,
+	GFLS_LOADER_ERROR_HAS_VERY_LONG_LINE,
 } GflsLoaderError;
 
 G_MODULE_EXPORT

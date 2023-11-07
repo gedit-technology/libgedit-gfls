@@ -102,10 +102,9 @@ check_bytes (GTask *task)
 
 	if (!g_utf8_validate_len (text, n_bytes, NULL))
 	{
-		/* TODO: have our own GError domain. */
 		g_task_return_new_error (task,
-					 G_IO_ERROR,
-					 G_IO_ERROR_FAILED,
+					 GFLS_LOADER_ERROR,
+					 GFLS_LOADER_ERROR_NOT_UTF8,
 					 _("The file is not encoded in UTF-8."));
 		g_object_unref (task);
 		return;
@@ -113,10 +112,9 @@ check_bytes (GTask *task)
 
 	if (gfls_utf8_has_very_long_line (text, task_data->max_n_bytes_per_line))
 	{
-		/* TODO: have our own GError domain. */
 		g_task_return_new_error (task,
-					 G_IO_ERROR,
-					 G_IO_ERROR_FAILED,
+					 GFLS_LOADER_ERROR,
+					 GFLS_LOADER_ERROR_HAS_VERY_LONG_LINE,
 					 _("The file contains a very long line."));
 		g_object_unref (task);
 		return;
@@ -160,10 +158,9 @@ read_input_stream_cb (GObject      *source_object,
 		 */
 		g_clear_pointer (&task_data->bytes, g_bytes_unref);
 
-		/* TODO: have our own GError domain. */
 		g_task_return_new_error (task,
-					 G_IO_ERROR,
-					 G_IO_ERROR_FAILED,
+					 GFLS_LOADER_ERROR,
+					 GFLS_LOADER_ERROR_TOO_BIG,
 					 _("Limit on the number of bytes to read reached."));
 		g_object_unref (task);
 		return;
@@ -256,10 +253,9 @@ query_file_info_cb (GObject      *source_object,
 
 		if (task_data->expected_file_size > task_data->max_size)
 		{
-			/* TODO: have our own GError domain. */
 			g_task_return_new_error (task,
-						 G_IO_ERROR,
-						 G_IO_ERROR_FAILED,
+						 GFLS_LOADER_ERROR,
+						 GFLS_LOADER_ERROR_TOO_BIG,
 						 _("The size of the file is too big."));
 			g_object_unref (task);
 			g_clear_object (&info);
