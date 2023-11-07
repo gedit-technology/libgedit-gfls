@@ -20,8 +20,9 @@ GFLS_API_VERSION = '1'
 
 GFLS_DEPS = [
   dependency('gio-2.0', version: '>= 2.78'),
-  dependency('gtk+-3.0', version: '>= 3.22')
 ]
+
+GTK3_DEP = dependency('gtk+-3.0', version: '>= 3.22', required: false)
 
 # gfls-config.h
 
@@ -121,3 +122,4 @@ summary('API version', GFLS_API_VERSION)
 summary('Prefix', get_option('prefix'))
 summary('GObject Introspection', get_option('gobject_introspection'))
 summary('API documentation', get_option('gtk_doc'))
+summary('Build GTK 3 tests', GTK3_DEP.found())

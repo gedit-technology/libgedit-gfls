@@ -10,8 +10,10 @@ executable(
   dependencies: GFLS_DEPS,
 )
 
-executable(
-  'gfls-gui',
-  'gfls-gui.c',
-  dependencies: GFLS_LIB_DEP,
-)
+if GTK3_DEP.found()
+  executable(
+    'gfls-gui',
+    'gfls-gui.c',
+    dependencies: [GFLS_LIB_DEP, GTK3_DEP],
+  )
+endif
