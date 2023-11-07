@@ -344,6 +344,9 @@ gfls_loader_basic_load_async (GFile               *file,
  * If everything went well, a #GBytes with the #GFile content (unmodified) is
  * returned. It is guaranteed to be a valid UTF-8 string.
  *
+ * Otherwise an error is returned. The %GFLS_LOADER_ERROR domain is used, among
+ * others.
+ *
  * The data contained in the resulting #GBytes is always zero-terminated, but
  * this is not included in the #GBytes length. The resulting #GBytes should be
  * freed with g_bytes_unref() when no longer in use.
