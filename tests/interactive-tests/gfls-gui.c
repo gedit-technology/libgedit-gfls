@@ -9,6 +9,9 @@
 /* 100 MiB */
 #define FILE_SIZE_HARD_LIMIT (100 * 1024 * 1024)
 
+/* Number of bytes per line. 80 is for testing purposes ;-) */
+#define VERY_LONG_LINE_LIMIT (80)
+
 typedef struct
 {
 	GtkApplicationWindow *window;
@@ -16,8 +19,6 @@ typedef struct
 	GtkSpinButton *file_size_limit_spin_button;
 
 	GFile *file;
-	gsize expected_file_size;
-	GFileInputStream *input_stream;
 } ProgramData;
 
 static ProgramData *
@@ -32,7 +33,6 @@ program_data_free (ProgramData *program_data)
 	if (program_data != NULL)
 	{
 		g_clear_object (&program_data->file);
-		g_clear_object (&program_data->input_stream);
 		g_free (program_data);
 	}
 }
@@ -79,144 +79,45 @@ set_text_buffer_text (ProgramData *program_data,
 	GtkTextBuffer *buffer;
 
 	text = g_bytes_get_data (bytes, &n_bytes);
-	if (!g_utf8_validate_len (text, n_bytes, NULL))
-	{
-		g_print ("Not valid UTF-8.\n");
-		return;
-	}
 
 	buffer = gtk_text_view_get_buffer (program_data->view);
 	gtk_text_buffer_set_text (buffer, text, n_bytes);
 }
 
 static void
-read_input_stream_cb (GObject      *source_object,
-		      GAsyncResult *result,
-		      gpointer      user_data)
-{
-	GInputStream *input_stream = G_INPUT_STREAM (source_object);
-	ProgramData *program_data = user_data;
-	GBytes *bytes;
-	gboolean is_truncated = FALSE;
-	GError *error = NULL;
-
-	bytes = gfls_input_stream_read_finish (input_stream,
-					       result,
-					       &is_truncated,
-					       &error);
-
-	if (error != NULL)
-	{
-		g_printerr ("Failed to read input stream: %s\n", error->message);
-		g_clear_error (&error);
-		g_bytes_unref (bytes);
-		return;
-	}
-
-	g_print ("Input content is truncated: %s\n", is_truncated ? "yes" : "no");
-	g_print ("Number of bytes read: %" G_GSIZE_FORMAT "\n", g_bytes_get_size (bytes));
-
-	set_text_buffer_text (program_data, bytes);
-
-	g_print ("\n");
-
-	g_bytes_unref (bytes);
-}
-
-static void
-read_input_stream (ProgramData *program_data)
-{
-	gfls_input_stream_read_async (G_INPUT_STREAM (program_data->input_stream),
-				      program_data->expected_file_size,
-				      get_file_size_limit (program_data),
-				      G_PRIORITY_DEFAULT,
-				      NULL,
-				      read_input_stream_cb,
-				      program_data);
-}
-
-static void
-open_file_cb (GObject      *source_object,
+load_file_cb (GObject      *source_object,
 	      GAsyncResult *result,
 	      gpointer      user_data)
 {
 	GFile *file = G_FILE (source_object);
 	ProgramData *program_data = user_data;
+	GBytes *bytes;
 	GError *error = NULL;
 
-	g_clear_object (&program_data->input_stream);
-	program_data->input_stream = g_file_read_finish (file, result, &error);
+	bytes = gfls_loader_basic_load_finish (file, result, &error);
 
 	if (error != NULL)
 	{
-		g_printerr ("Failed to open file for reading: %s\n", error->message);
+		g_printerr ("%s\n", error->message);
 		g_clear_error (&error);
+		g_bytes_unref (bytes);
 		return;
 	}
 
-	read_input_stream (program_data);
+	set_text_buffer_text (program_data, bytes);
+	g_bytes_unref (bytes);
 }
 
 static void
-open_file (ProgramData *program_data)
+load_file (ProgramData *program_data)
 {
-	g_file_read_async (program_data->file,
-			   G_PRIORITY_DEFAULT,
-			   NULL,
-			   open_file_cb,
-			   program_data);
-}
-
-static void
-query_file_info_cb (GObject      *source_object,
-		    GAsyncResult *result,
-		    gpointer      user_data)
-{
-	GFile *file = G_FILE (source_object);
-	ProgramData *program_data = user_data;
-	GFileInfo *info;
-	GError *error = NULL;
-
-	info = g_file_query_info_finish (file, result, &error);
-
-	if (error != NULL)
-	{
-		g_printerr ("Failed to query file informations: %s\n", error->message);
-		g_clear_error (&error);
-		g_clear_object (&info);
-		return;
-	}
-
-	if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
-	{
-		goffset n_bytes;
-
-		n_bytes = g_file_info_get_size (info);
-		g_print ("File size in bytes: %" G_GOFFSET_FORMAT "\n", n_bytes);
-
-		program_data->expected_file_size = n_bytes;
-	}
-	else
-	{
-		/* Unknown size, let's start with 8 KiB. */
-		program_data->expected_file_size = 8192;
-	}
-
-	open_file (program_data);
-
-	g_clear_object (&info);
-}
-
-static void
-query_file_info (ProgramData *program_data)
-{
-	g_file_query_info_async (program_data->file,
-				 G_FILE_ATTRIBUTE_STANDARD_SIZE,
-				 G_FILE_QUERY_INFO_NONE,
-				 G_PRIORITY_DEFAULT,
-				 NULL,
-				 query_file_info_cb,
-				 program_data);
+	gfls_loader_basic_load_async (program_data->file,
+				      get_file_size_limit (program_data),
+				      VERY_LONG_LINE_LIMIT,
+				      G_PRIORITY_DEFAULT,
+				      NULL,
+				      load_file_cb,
+				      program_data);
 }
 
 static void
@@ -235,7 +136,7 @@ open_file_chooser_response_cb (GtkFileChooserNative *open_file_chooser,
 		g_print ("Open file: %s\n", parse_name);
 		g_free (parse_name);
 
-		query_file_info (program_data);
+		load_file (program_data);
 	}
 
 	g_object_unref (open_file_chooser);
