@@ -71,8 +71,8 @@ get_file_size_limit (ProgramData *program_data)
 }
 
 static void
-set_text_buffer_text (ProgramData *program_data,
-		      GBytes      *bytes)
+set_text_buffer_content (ProgramData *program_data,
+			 GBytes      *bytes)
 {
 	const gchar *text;
 	gsize n_bytes;
@@ -104,7 +104,7 @@ load_file_cb (GObject      *source_object,
 		return;
 	}
 
-	set_text_buffer_text (program_data, bytes);
+	set_text_buffer_content (program_data, bytes);
 	g_bytes_unref (bytes);
 }
 
