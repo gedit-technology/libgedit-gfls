@@ -11,6 +11,7 @@
 
 #include <gfls/gfls-input-stream.h>
 #include <gfls/gfls-loader-basic.h>
+#include <gfls/gfls-unsaved-document-titles.h>
 #include <gfls/gfls-utf8.h>
 
 #undef GFLS_H_INSIDE
