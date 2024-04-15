@@ -258,6 +258,13 @@ gfls_unsaved_document_titles_get_title (GflsUnsavedDocumentTitles *titles,
  *
  * The callback will be used by gfls_unsaved_document_titles_get_title().
  *
+ * Examples:
+ * - "Unsaved Document N"
+ * - "Unsaved File N"
+ * - "Untitled Document N"
+ * - "New Document N"
+ * - Etc.
+ *
  * Since: 0.1
  */
 void
