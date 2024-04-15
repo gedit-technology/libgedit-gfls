@@ -1,4 +1,5 @@
 unit_tests = [
+  'test-unsaved-document-titles',
   'test-utf8',
 ]
 
