@@ -49,9 +49,15 @@ int
 main (int    argc,
       char **argv)
 {
+	int exit_status;
+
+	gfls_init ();
 	g_test_init (&argc, &argv, NULL);
 
 	g_test_add_func ("/utf8/has_very_long_line", test_has_very_long_line);
 
-	return g_test_run ();
+	exit_status = g_test_run ();
+	gfls_finalize ();
+
+	return exit_status;
 }

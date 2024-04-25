@@ -242,6 +242,8 @@ main (int    argc,
 
 	setlocale (LC_ALL, "");
 
+	gfls_init ();
+
 	app = gtk_application_new (NULL, G_APPLICATION_DEFAULT_FLAGS);
 	program_data = program_data_new ();
 
@@ -254,5 +256,7 @@ main (int    argc,
 
 	g_object_unref (app);
 	program_data_free (program_data);
+	gfls_finalize ();
+
 	return exit_status;
 }
