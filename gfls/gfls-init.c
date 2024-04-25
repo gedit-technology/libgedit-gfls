@@ -50,7 +50,7 @@ gfls_finalize (void)
 	 */
 	if (!done)
 	{
-		gfls_unsaved_document_titles_unref_default_instance ();
+		_gfls_unsaved_document_titles_unref_default_instance ();
 		done = TRUE;
 	}
 }

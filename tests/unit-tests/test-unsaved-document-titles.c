@@ -24,8 +24,6 @@ test_allocate_and_release_numbers (void)
 
 	num_c = gfls_unsaved_document_titles_allocate_number (titles);
 	g_assert_cmpint (num_c, ==, 1);
-
-	gfls_unsaved_document_titles_unref_default_instance ();
 }
 
 static gchar *
@@ -66,10 +64,16 @@ int
 main (int    argc,
       char **argv)
 {
+	int exit_status;
+
+	gfls_init ();
 	g_test_init (&argc, &argv, NULL);
 
 	g_test_add_func ("/UnsavedDocumentTitles/allocate_and_release_numbers", test_allocate_and_release_numbers);
 	g_test_add_func ("/UnsavedDocumentTitles/title", test_title);
 
-	return g_test_run ();
+	exit_status = g_test_run ();
+	gfls_finalize ();
+
+	return exit_status;
 }

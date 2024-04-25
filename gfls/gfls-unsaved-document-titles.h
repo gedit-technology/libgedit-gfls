@@ -62,9 +62,6 @@ GflsUnsavedDocumentTitles *
 		gfls_unsaved_document_titles_get_default		(void);
 
 G_MODULE_EXPORT
-void		gfls_unsaved_document_titles_unref_default_instance	(void);
-
-G_MODULE_EXPORT
 gint		gfls_unsaved_document_titles_allocate_number		(GflsUnsavedDocumentTitles *titles);
 
 G_MODULE_EXPORT
@@ -78,6 +75,9 @@ gchar *		gfls_unsaved_document_titles_get_title			(GflsUnsavedDocumentTitles *ti
 G_MODULE_EXPORT
 void		gfls_unsaved_document_titles_set_title_callback		(GflsUnsavedDocumentTitles        *titles,
 									 GflsUnsavedDocumentTitleCallback  title_callback);
+
+G_GNUC_INTERNAL
+void		_gfls_unsaved_document_titles_unref_default_instance	(void);
 
 G_END_DECLS
 

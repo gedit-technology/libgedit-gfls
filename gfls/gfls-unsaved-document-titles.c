@@ -121,16 +121,8 @@ gfls_unsaved_document_titles_get_default (void)
 	return default_instance;
 }
 
-/**
- * gfls_unsaved_document_titles_unref_default_instance:
- *
- * Can be called at the end of main() to release the memory used by the default
- * instance, to be friendly to memory-debugging tools.
- *
- * Since: 0.1
- */
 void
-gfls_unsaved_document_titles_unref_default_instance (void)
+_gfls_unsaved_document_titles_unref_default_instance (void)
 {
 	if (default_instance != NULL)
 	{
