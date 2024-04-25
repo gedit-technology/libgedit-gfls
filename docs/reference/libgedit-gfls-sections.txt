@@ -1,11 +1,17 @@
 <INCLUDE>gfls/gfls.h</INCLUDE>
 
 <SECTION>
+<FILE>gfls-init</FILE>
+gfls_init
+gfls_finalize
+<SUBSECTION Standard>
+GFLS_H_INSIDE
+</SECTION>
+
+<SECTION>
 <FILE>gfls-input-stream</FILE>
 gfls_input_stream_read_async
 gfls_input_stream_read_finish
-<SUBSECTION Standard>
-GFLS_H_INSIDE
 </SECTION>
 
 <SECTION>

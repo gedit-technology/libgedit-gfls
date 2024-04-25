@@ -9,6 +9,7 @@
 
 #include <gfls/gfls-enum-types.h>
 
+#include <gfls/gfls-init.h>
 #include <gfls/gfls-input-stream.h>
 #include <gfls/gfls-loader-basic.h>
 #include <gfls/gfls-unsaved-document-titles.h>
