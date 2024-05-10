@@ -112,7 +112,10 @@ add_project_arguments(supported_warning_cflags, language: 'c')
 ##### end CFLAGS
 
 subdir('gfls')
-subdir('tests')
+
+if get_option('tests')
+  subdir('tests')
+endif
 
 if get_option('gtk_doc')
   subdir('docs/reference')
@@ -122,4 +125,5 @@ summary('API version', GFLS_API_VERSION)
 summary('Prefix', get_option('prefix'))
 summary('GObject Introspection', get_option('gobject_introspection'))
 summary('API documentation', get_option('gtk_doc'))
-summary('Build GTK 3 tests', GTK3_DEP.found())
+summary('Build tests', get_option('tests'))
+summary('Build GTK 3 tests', get_option('tests') and GTK3_DEP.found())
