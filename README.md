@@ -1,7 +1,19 @@
 libgedit-gfls
 =============
 
-A module dedicated to file loading and saving.
+Short description
+-----------------
+
+Gedit Technology - File loading and saving
+
+Longer description
+------------------
+
+libgedit-gfls is part of
+[Gedit Technology](https://gedit-technology.github.io/).
+
+It is a module dedicated to file loading and saving for the needs of gedit and
+other similar text editors.
 
 Dependencies
 ------------
