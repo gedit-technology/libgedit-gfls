@@ -1,6 +1,24 @@
 <INCLUDE>gfls/gfls.h</INCLUDE>
 
 <SECTION>
+<FILE>gfls-attribute-keys</FILE>
+GflsAttributeKeys
+gfls_attribute_keys_new
+gfls_attribute_keys_add
+gfls_attribute_keys_to_string
+<SUBSECTION Standard>
+GFLS_ATTRIBUTE_KEYS
+GFLS_ATTRIBUTE_KEYS_CLASS
+GFLS_ATTRIBUTE_KEYS_GET_CLASS
+GFLS_IS_ATTRIBUTE_KEYS
+GFLS_IS_ATTRIBUTE_KEYS_CLASS
+GFLS_TYPE_ATTRIBUTE_KEYS
+GflsAttributeKeysClass
+GflsAttributeKeysPrivate
+gfls_attribute_keys_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gfls-init</FILE>
 gfls_init
 gfls_finalize

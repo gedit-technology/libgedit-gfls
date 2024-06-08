@@ -1,5 +1,6 @@
 gfls_public_headers = [
   'gfls.h',
+  'gfls-attribute-keys.h',
   'gfls-init.h',
   'gfls-input-stream.h',
   'gfls-loader-basic.h',
@@ -8,6 +9,7 @@ gfls_public_headers = [
 ]
 
 gfls_public_c_files = [
+  'gfls-attribute-keys.c',
   'gfls-init.c',
   'gfls-input-stream.c',
   'gfls-loader-basic.c',

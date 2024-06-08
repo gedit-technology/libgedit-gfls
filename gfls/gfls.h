@@ -1,4 +1,4 @@
-/* SPDX-FileCopyrightText: 2023 - Sébastien Wilmet
+/* SPDX-FileCopyrightText: 2023-2024 - Sébastien Wilmet
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
@@ -9,6 +9,7 @@
 
 #include <gfls/gfls-enum-types.h>
 
+#include <gfls/gfls-attribute-keys.h>
 #include <gfls/gfls-init.h>
 #include <gfls/gfls-input-stream.h>
 #include <gfls/gfls-loader-basic.h>
