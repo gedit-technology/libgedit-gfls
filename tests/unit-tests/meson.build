@@ -1,4 +1,5 @@
 unit_tests = [
+  'test-attribute-keys',
   'test-unsaved-document-titles',
   'test-utf8',
 ]
