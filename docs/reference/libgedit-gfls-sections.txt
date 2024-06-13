@@ -59,6 +59,10 @@ gfls_loader_config_get_type
 <SECTION>
 <FILE>gfls-loader-config-simple</FILE>
 GflsLoaderConfigSimple
+gfls_loader_config_simple_new_from_file
+gfls_loader_config_simple_new_from_stream
+gfls_loader_config_simple_get_file
+gfls_loader_config_simple_get_stream
 <SUBSECTION Standard>
 GFLS_IS_LOADER_CONFIG_SIMPLE
 GFLS_IS_LOADER_CONFIG_SIMPLE_CLASS

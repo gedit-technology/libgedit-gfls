@@ -38,7 +38,20 @@ struct _GflsLoaderConfigSimpleClass
 	gpointer padding[12];
 };
 
-GType gfls_loader_config_simple_get_type (void);
+G_MODULE_EXPORT
+GType			gfls_loader_config_simple_get_type		(void);
+
+G_MODULE_EXPORT
+GflsLoaderConfigSimple *gfls_loader_config_simple_new_from_file		(GFile *file);
+
+G_MODULE_EXPORT
+GflsLoaderConfigSimple *gfls_loader_config_simple_new_from_stream	(GInputStream *input_stream);
+
+G_MODULE_EXPORT
+GFile *			gfls_loader_config_simple_get_file		(GflsLoaderConfigSimple *config);
+
+G_MODULE_EXPORT
+GInputStream *		gfls_loader_config_simple_get_stream		(GflsLoaderConfigSimple *config);
 
 G_END_DECLS
 
