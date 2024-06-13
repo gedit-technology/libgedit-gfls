@@ -10,11 +10,10 @@ Class or interface names:
   GflsInfo reflect the fact that it gathers a GFileInfo (basically) for later
   use.
 
-- GflsLoaderConfig interface with GflsLoaderConfigSimple/Basic implementation.
+- GflsFile to extend GFile with more functions.
+
 - GflsLoader interface (that takes a GflsLoaderConfig as an input), with
   GflsLoaderBasic for dealing with UTF-8 only.
-
-- GflsFile to extend GFile with more functions.
 
 - Driver: like a compiler driver that invokes several smaller programs. Have a
   driver for loading, and a driver for saving, that invoke smaller utilities

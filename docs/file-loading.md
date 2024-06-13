@@ -15,15 +15,10 @@ Name: GflsLoadingDriver, or GflsLoadingManager, or GflsLoader.
 
 Steps:
 
-1. Have the loading configuration with an input GFile or GInputStream (or take
-   stdin as a convenience feature which creates the GInputStream).
-
-   Names: GflsLoadingConfig (interface) and GflsLoadingConfigSimple (class),
-   or GflsLoaderConfig and GflsLoaderConfigSimple.
-
+1. Create a GflsLoaderConfig(Simple).
 2. (Optional) If GFile as input, query the GFileInfo.
-3. (Optional) Check the GFileInfo against the loading configuration (check the
-   file size).
+3. (Optional) Check the GFileInfo against the GflsLoaderConfig(Simple) (check
+   the file size).
 4. Load all the raw content into memory (with max size).
 5. (Optional) Transform if needed the raw content into the final content
    suitable to be inserted into a GtkTextBuffer (encoding conversion, splitting
