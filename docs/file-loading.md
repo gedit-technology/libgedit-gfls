@@ -6,16 +6,21 @@ Check the file size
 
 Very first thing to check: **the file size**.
 
-If `file_size` > max, show an error infobar.
+If `file_size` > max, show an error or warning infobar.
 
-File loading driver
--------------------
+File loading steps
+------------------
 
-GflsLoadingDriver class.
+Name: GflsLoadingDriver, or GflsLoadingManager, or GflsLoader.
 
 Steps:
+
 1. Have the loading configuration with an input GFile or GInputStream (or take
    stdin as a convenience feature which creates the GInputStream).
+
+   Names: GflsLoadingConfig (interface) and GflsLoadingConfigSimple (class),
+   or GflsLoaderConfig and GflsLoaderConfigSimple.
+
 2. (Optional) If GFile as input, query the GFileInfo.
 3. (Optional) Check the GFileInfo against the loading configuration (check the
    file size).
