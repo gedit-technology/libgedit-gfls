@@ -5,6 +5,7 @@ gfls_public_headers = [
   'gfls-input-stream.h',
   'gfls-loader-basic.h',
   'gfls-loader-config.h',
+  'gfls-loader-config-simple.h',
   'gfls-unsaved-document-titles.h',
   'gfls-utf8.h',
 ]
@@ -15,6 +16,7 @@ gfls_public_c_files = [
   'gfls-input-stream.c',
   'gfls-loader-basic.c',
   'gfls-loader-config.c',
+  'gfls-loader-config-simple.c',
   'gfls-unsaved-document-titles.c',
   'gfls-utf8.c',
 ]

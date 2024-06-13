@@ -57,6 +57,21 @@ gfls_loader_config_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gfls-loader-config-simple</FILE>
+GflsLoaderConfigSimple
+<SUBSECTION Standard>
+GFLS_IS_LOADER_CONFIG_SIMPLE
+GFLS_IS_LOADER_CONFIG_SIMPLE_CLASS
+GFLS_LOADER_CONFIG_SIMPLE
+GFLS_LOADER_CONFIG_SIMPLE_CLASS
+GFLS_LOADER_CONFIG_SIMPLE_GET_CLASS
+GFLS_TYPE_LOADER_CONFIG_SIMPLE
+GflsLoaderConfigSimpleClass
+GflsLoaderConfigSimplePrivate
+gfls_loader_config_simple_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gfls-unsaved-document-titles</FILE>
 GflsUnsavedDocumentTitles
 GflsUnsavedDocumentTitleCallback
