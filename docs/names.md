@@ -15,3 +15,8 @@ Class or interface names:
   GflsLoaderBasic for dealing with UTF-8 only.
 
 - GflsFile to extend GFile with more functions.
+
+- Driver: like a compiler driver that invokes several smaller programs. Have a
+  driver for loading, and a driver for saving, that invoke smaller utilities
+  with phases. The utilities are just classes and functions to be called (in the
+  same process). A bit like a "Manager" class, except that the name is shorter.
