@@ -13,6 +13,7 @@
 #include <gfls/gfls-init.h>
 #include <gfls/gfls-input-stream.h>
 #include <gfls/gfls-loader-basic.h>
+#include <gfls/gfls-loader-config.h>
 #include <gfls/gfls-unsaved-document-titles.h>
 #include <gfls/gfls-utf8.h>
 

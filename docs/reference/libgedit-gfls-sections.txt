@@ -45,6 +45,18 @@ gfls_loader_error_quark
 </SECTION>
 
 <SECTION>
+<FILE>gfls-loader-config</FILE>
+GflsLoaderConfig
+GflsLoaderConfigInterface
+<SUBSECTION Standard>
+GFLS_IS_LOADER_CONFIG
+GFLS_LOADER_CONFIG
+GFLS_LOADER_CONFIG_GET_INTERFACE
+GFLS_TYPE_LOADER_CONFIG
+gfls_loader_config_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gfls-unsaved-document-titles</FILE>
 GflsUnsavedDocumentTitles
 GflsUnsavedDocumentTitleCallback
