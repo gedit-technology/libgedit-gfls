@@ -6,7 +6,7 @@
 project(
   'libgedit-gfls', 'c',
   meson_version: '>= 0.64',
-  version: '0.1.1',
+  version: '0.2.alpha',
   default_options: ['warning_level=2']
 )
 
