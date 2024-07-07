@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+  <name>libgedit-gfls</name>
+  <shortdesc xml:lang="en">Gedit Technology - File loading and saving</shortdesc>
+  <description xml:lang="en">
+libgedit-gfls is part of Gedit Technology.
+
+It is a module dedicated to file loading and saving for the needs of gedit and
+other similar text editors.
+  </description>
+
+  <homepage rdf:resource="https://gitlab.gnome.org/World/gedit/libgedit-gfls" />
+  <download-page rdf:resource="https://download.gnome.org/sources/libgedit-gfls/" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/World/gedit/libgedit-gfls/-/issues" />
+
+  <programming-language>C</programming-language>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Sébastien Wilmet</foaf:name>
+      <foaf:mbox rdf:resource="mailto:swilmet@mailfence.com" />
+      <gnome:userid>swilmet</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+</Project>
