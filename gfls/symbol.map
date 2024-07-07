@@ -1,6 +1,0 @@
-{
-global:
-  gfls_*;
-local:
-  *;
-};
